@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="hellomule-test-suite.xml" />
+	<munit:test name="hellomule-test-suite-hellomuleFlowTest" doc:id="b8358be8-1cab-476d-8543-dc445c117ae6" description="Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="e48d7982-d5b5-4465-a005-bc586bda0139">
+				<munit:attributes value='#[{queryParams: {firstName:"Namrata",lastName:"Bawane"}}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to hellomuleFlow" doc:id="020ec412-8bfa-4d3b-98a6-28eab40cbb10" name="hellomuleFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<logger level="INFO" doc:name="Logger" doc:id="0692c956-d1e5-4159-87ff-8adef67339a3" message="Validation Block"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="b171b6b7-3d14-408f-9e7c-f053784c5138" actual='#[payload.message]' expected='Welcome to mule Namrata Bawane' message="Response message is incorrect"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="hellomule-success-Test" doc:id="a24a2fbf-008b-41b6-a46d-79cfa97a832b" >
+		<munit:execution>
+			<munit:set-event doc:name="Set Event" doc:id="0da237df-c1dd-4c71-851b-ef679ed638b3">
+				<munit:attributes value='#[{queryParams: {firstName:"Namrata",lastName:"Bawane"}}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to hellomuleFlow" doc:id="c9e50efd-6f1e-461b-9d45-20bf576c86dc" name="hellomuleFlow" />
+		</munit:execution>
+		<munit:validation >
+			<logger level="INFO" doc:name="Logger" doc:id="440bc76d-4ba1-47bb-878c-377c2966d750" message="Validation Block" />
+			<munit-tools:assert-that doc:name="Assert that" doc:id="464d6f80-2afc-40bb-82a4-f467b154251a" is='#[MunitTools::equalTo("Welcome to mule Namrata Bawane")]' expression="#[payload.message]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="hellomule-test-suiteTest" doc:id="7d34c7a5-8d62-4c67-9d99-a1a910a2c4f5" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="a0149953-6afa-4210-b0e8-cc732e4a0b6e" >
+				<munit:attributes value='#[{queryParams: {firstName:"Namrata",lastName:"Bawane"}}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to hellomuleFlow" doc:id="2220f2c8-699c-44cc-8495-64a114b8bc27" name="hellomuleFlow" />
+		</munit:execution>
+		<munit:validation >
+			<logger level="INFO" doc:name="Logger" doc:id="e896cde0-ac0f-4de6-8ca2-429a0c2c35db" message="Validation Block" />
+			<munit-tools:assert doc:name="Assert expression" doc:id="2e2a1734-9a89-44f7-943b-02092f6de400" >
+				<munit-tools:that ><![CDATA[#[import * from dw::test::Asserts 
+ ---
+payload must equalTo({
+	"message": "Welcome to mule Namrata Bawane"
+})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="hellomule-test-suiteTest1" doc:id="1d11ec4e-c97a-427a-b435-ee94938bc15f" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="9712f820-7e12-466f-89d4-45921ede385c" >
+				<munit:attributes value='#[{queryParams: {firstName:"Namrata",lastName:"Bawane"}}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to hellomuleFlow" doc:id="436b0ff5-2715-403f-a401-81c1a7cc1bde" name="hellomuleFlow" />
+		</munit:execution>
+		<munit:validation >
+			<logger level="INFO" doc:name="Logger" doc:id="aaadcd7a-70da-49ac-b5f5-e1db4dc9eee2" message="Validation Block" />
+			<munit-tools:assert doc:name="Assert expression" doc:id="3214e6be-a208-4a88-95dd-60bcfe52dfbc" message="Payload dosen't match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import sayHello::sayHello_response
+---
+sayHello_response::main({payload: payload,attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
